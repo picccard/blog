@@ -18,3 +18,8 @@ git submodule update --remote --merge
 # use example site from theme
 cp -r themes/maverick/exampleSite/* .
 ```
+
+# Ref
+- [https://gohugo.io/getting-started/quick-start/](https://gohugo.io/getting-started/quick-start/)
+- [https://themes.gohugo.io/themes/maverick/](https://themes.gohugo.io/themes/maverick/)
+- [https://themes.gohugo.io/themes/gokarna/](https://themes.gohugo.io/themes/gokarna/)

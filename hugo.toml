@@ -1,7 +1,7 @@
 baseURL = "https://blog.eula.no/"
 languageCode = "en-us"
 title = "blog.eula.no"
-theme = ["gokarna"]
+theme = ["hugo-notice", "gokarna"]
 defaultContentLanguage = "en"
 enableEmoji = true
 enableRobotsTXT = true

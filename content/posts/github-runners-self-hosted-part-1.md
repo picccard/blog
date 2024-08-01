@@ -1,11 +1,11 @@
 ---
-weight: 15
 title: "How to run GitHub Runners Self-Hosted in Azure - Part 1"
-date: 2024-08-02T15:56:27+02:00
+date: 2024-08-01T15:56:27+02:00
 description: "How to run GitHub Runners Self-Hosted in Azure - Part 1"
 tags: ["github", "azure", "container", "docker", "bicep", "powershell"]
 type: post
 image: "/images/github-runner-part1/github-runner-part1.png"
+weight: 15
 showTableOfContents: true
 ---
 

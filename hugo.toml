@@ -1,66 +1,73 @@
-baseURL = 'https://blog.eula.no'
-languageCode = 'en-us'
-title = 'eula blog'
-paginate = 3
-theme = 'maverick'
+baseURL = "https://blog.eula.no/"
+languageCode = "en-us"
+title = "blog.eula.no"
+theme = ["gokarna"]
+defaultContentLanguage = "en"
+enableEmoji = true
+enableRobotsTXT = true
 
-[permalinks]
-  pages = "/:slug"
+# Choose one of monokai, emacs, trac or perldoc
+pygmentsStyle = "monokai"
 
 [params]
-  logo = '/assets/favicon.ico'
-  description = "A minimal hugo theme focus on content"
-  author = 'Calvin Tran'
-
-  [params.comments]
-    enabled = false
-    githubRepo = 'canhtran/maverick'
-    theme = 'github-light'
-
+  footer = "Eskil Uhlving Larsen"
+  description = "Azure | AWS | IaC | DevOps | Powershell"
+  avatarURL = "/images/headshot.jpeg"
+  AvatarAltText = "avatar"
+  avatarSize = "size-l"
+  ShowBackToTopButton = true # true or false for "back to top" button on posts
+  socialIcons = [
+    {name = "github", url = "https://github.com/picccard"},
+    {name = "linkedin", url = "https://www.linkedin.com/in/eskil-larsen-a15479175/"},
+    {name = "rss", url = "/index.xml"}
+  ]
+  metaKeywords = ["blog", "gokarna", "hugo"]
 
 [menu]
   [[menu.main]]
-    identifier = "about"
-    name = "About"
-    url = "/about/"
-    weight = "-110"
+    name = "Home"
+    pre = "<span data-feather='home'></span>"
+    url = "/"
+    weight = 1
+
   [[menu.main]]
-    identifier = "posts"
-    name = "Post"
+    name = "Posts"
+    pre = "<span data-feather='book'></span>"
     url = "/posts/"
-    weight = -200
+    weight = 2
+
+  [[menu.main]]
+    name = "Projects"
+    pre = "<span data-feather='code'></span>"
+    url = "/projects/"
+    weight = 3
+
+  [[menu.main]]
+    name = "Tags"
+    pre = "<span data-feather='tag'></span>"
+    url = "/tags/"
+    weight = 4
+
+  [[menu.main]]
+    identifier = "github"
+    pre = "<span data-feather='github'></span>"
+    url = "https://github.com/picccard"
+    weight = 5
+
+  [[menu.main]]
+    identifier = "linkedin"
+    pre = "<span data-feather='linkedin'></span>"
+    url = "https://www.linkedin.com/in/eskil-larsen-a15479175/"
+    weight = 6
+
+  [[menu.main]]
+    identifier = "rss"
+    pre = "<span data-feather='rss'></span>"
+    url = "/index.xml"
+    weight = 7
 
 [markup]
-  [markup.goldmark.renderer]
-    unsafe = true
-  [markup.highlight]
-    anchorLineNos = false
-    codeFences = true
-    guessSyntax = false
-    hl_Lines = ''
-    hl_inline = false
-    lineAnchors = ''
-    lineNoStart = 1
-    lineNos = false
-    lineNumbersInTable = true
-    noClasses = true
-    noHl = false
-    style = 'monokailight'
-    tabWidth = 4
-
-[taxonomies]
-  tag = "tags"
-
-[outputs]
-  home = ["HTML", "RSS", "JSON"]
-  section = ["HTML"]
-
-[outputFormats.RSS]
-  mediatype = "application/rss"
-  baseName = "atom"
-
-[outputFormats.JSON]
-  mediatype = "application/json"
-  baseName = "feed"
-
-ignoreErrors = ["error-remote-getjson"]
+  [markup.tableOfContents]
+    startLevel = 1
+    endLevel = 4
+    ordered = false

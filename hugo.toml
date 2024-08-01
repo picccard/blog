@@ -37,34 +37,28 @@ pygmentsStyle = "monokai"
     weight = 2
 
   [[menu.main]]
-    name = "Projects"
-    pre = "<span data-feather='code'></span>"
-    url = "/projects/"
-    weight = 3
-
-  [[menu.main]]
     name = "Tags"
     pre = "<span data-feather='tag'></span>"
     url = "/tags/"
-    weight = 4
+    weight = 3
 
   [[menu.main]]
     identifier = "github"
     pre = "<span data-feather='github'></span>"
     url = "https://github.com/picccard"
-    weight = 5
+    weight = 4
 
   [[menu.main]]
     identifier = "linkedin"
     pre = "<span data-feather='linkedin'></span>"
     url = "https://www.linkedin.com/in/eskil-larsen-a15479175/"
-    weight = 6
+    weight = 5
 
   [[menu.main]]
     identifier = "rss"
     pre = "<span data-feather='rss'></span>"
     url = "/index.xml"
-    weight = 7
+    weight = 6
 
 [markup]
   [markup.tableOfContents]

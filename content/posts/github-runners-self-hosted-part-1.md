@@ -6,7 +6,7 @@ description: "Using Azure Container Apps for self-hosted runners in GitHub"
 tags: ["github", "azure", "container", "docker", "bicep", "powershell"]
 type: post
 image: "/images/github-runner-part1/github-runner-part1.png"
-weight: 2
+# weight: 2
 showTableOfContents: true
 ---
 

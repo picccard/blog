@@ -11,12 +11,15 @@ showTableOfContents: true
 
 # How to run GitHub Runners Self-Hosted in Azure
 
-## Why not just use GitHub-hosted runners
-GitHub-hosted runners are great and comes in a variety of flavors with different OS and release versions, and include a bunch of preinstalled software.
-But sometimes you require something custom to fulfill your needs, such as beefier hardware for bigger or longer runs, another operation system, some custom software or network access into a private vNet. This is where self-hosted runners come to play.
+## Why self-hosted runners
+GitHub-hosted runners are great! They come in a variety OS and release versions, and with a bunch of preinstalled software.
+However self-hosted runners allows for more flexibility when you require something different, such as:
+- beefier hardware
+- longer workflow runs
+- other OS
+- private vnet access
 
-## How
-While GitHub-hosted runners runs on virtual machines [https://github.com/actions/runner-images](https://github.com/actions/runner-images), self-hosted runners can run from both on-prem and in a cloud, inside of a virtual machine or in a container. Heck, you could run it on your physical machine if you want to.
+While GitHub-hosted runners are hosted on [virtual machines](https://github.com/actions/runner-images#about), self-hosted runners can run from both on-prem and in a cloud, inside of a virtual machine or in a container. Heck, you can run it on your physical machine if you want to!
 
 So in this post I'll go over how to create a container image for a self-hosted runner, how to run it in Azure and some gotchas I encountered.
 
@@ -26,13 +29,11 @@ Heading over to the settings of a GitHub repo or org shows the instructions for 
 {{< imagecaption source="/images/github-runner-part1/add-new-self-hosted-runner.png" alt="Add new self-hosted runner" title="instructions for self-hosted runners" >}}
 
 ### Create a container image
-Since the GitHub-hosted runners are tailored to the public, with a broad set of features and possible use-cases, the VM images are quite large. When configuring self-hosted runners, it is recommended to tailor the runner to your known needs and not include things that might be "nice-to-have". Keep the image size small and create multiple images runners for different use cases.
-
-[Supported architectures and operating systems](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/about-self-hosted-runners#supported-architectures-and-operating-systems-for-self-hosted-runners) for self-hosted runners is listed in their docs.
+Since the GitHub-hosted runners are tailored to the public, alot of software is included, thus making the VM image quite large. When configuring self-hosted runners, it is recommended to tailor the runner to your known needs and not include things that might be "nice-to-have". Keep the image size small and create multiple images runners for different use cases.
 
 Create a Dockerfile with your preferred base image, download, configure and run the runner software. Or use [GitHub's official runner image](https://github.com/actions/runner/pkgs/container/actions-runner) which comes bundled with it.
 
-I have examples with both ubuntu22-04 and the official image in this GitHub [repository](https://github.com/picccard/self-hosted-runner).
+I have examples with both ubuntu22-04 and the official image in this GitHub [repository](https://github.com/picccard/self-hosted-runner). The [bash script](https://github.com/picccard/self-hosted-runner/blob/main/src/images/start.sh) for the `ENTRYPOINT` will fetch a registration token from the GitHub API, configure and start the runner.
 
 
 {{< details title="Dockerfile using actions-runner as base image (CLICK TO EXPAND)" >}}
@@ -134,15 +135,16 @@ ENTRYPOINT ["./start.sh"]
 ```
 {{< /details >}}
 
-The [bash script](https://github.com/picccard/self-hosted-runner/blob/main/src/images/start.sh) for the `ENTRYPOINT` will fetch a registration token from the GitHub API, configure and start the runner.
+Build the container image and push it to a container registry. When the container image is build and pushed it can be deployed to any service that supports containers. _If no container registry exists yet, return to this after the infrastruction is built._
 
-
-When you have the container image built and pushed to a container registry, it can be deployed to any service that supports containers.
+```bash
+az acr build -t "${ImageName}:v0.1.0" -t "${ImageName}:latest" --registry $RegistryName --platform $Platform --build-arg RUNNER_VERSION=$RunnerVersion --file $dockerfileName $DockerfileDir
+```
 
 ### Generate an access token (PAT)
 To register a runner to a repo or org, first generate a GitHub personal access token with the correct permissions. Open account settings or org settings and find developer settings. From there generate a PAT with the minimum permissions required.
 
-- Access to the repo
+- Repository access
   - metadata (Read)
   - administration (Read + Write)
 
@@ -150,6 +152,18 @@ To register a runner to a repo or org, first generate a GitHub personal access t
 
 Pass the PAT to the bicep template as a secure parameter and store it in a keyvault. 
 In `.bicepparam` files use the preffered function `getSecret()` or `readEnvironmentVariable()` if no keyvault exists. See the doc for [bicep functions](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-functions-parameters-file) and [secret management](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/scenarios-secrets) for details.
+
+Bicep file:
+```bicep
+@description('The GitHub Access Token with permission to fetch registration-token')
+@secure()
+param parGitHubAccessToken string
+```
+Bicepparam file:
+```bicep
+// param parGitHubAccessToken = readEnvironmentVariable('GITHUB_ACCESS_TOKEN')
+param parGitHubAccessToken = az.getSecret('<subscription-id>', '<rg-name>', '<key-vault-name>', '<secret-name>')
+```
 
 
 ### Build the infrastructure (Bicep)
@@ -162,7 +176,7 @@ Along with the Azure Container App we deploy some other resources such as log-wo
 
 {{< imagecaption source="/images/github-runner-part1/bicep-visualize-aca.png" alt="Visualization of bicep template" title="visualization of bicep template" >}}
 
-Here is a more detailed look at how the bicep template will be structured:
+Here is a more detailed look at how the container app is configured in the bicep template:
 
 {{< highlight bicep "lineNos=inline" >}}
 targetScope = 'subscription'
@@ -222,6 +236,19 @@ module aca 'br/public:avm/res/app/container-app:0.4.1' = {
   }
 }
 {{< /highlight >}}
+
+Deploy the bicep template to a subscription. Use azure-cli or pwsh in your own terminal, or create a workflow to handle it.
+```powershell
+$deploySplat = @{
+    Name                           = "self-hosted-runners-{0}" -f (Get-Date).ToString("yyyyMMdd-HH-mm-ss")
+    Location                       = $azRegion
+    TemplateFile                   = 'src/bicep/main.bicep'
+    TemplateParameterFile          = 'main.bicepparam'
+    Verbose                        = $true
+}
+Select-AzSubscription -Subscription $azSubscriptionName
+New-AzSubscriptionDeployment @deploySplat
+```
 
 
 ## Results
@@ -320,7 +347,7 @@ Solution will be either to:
 
 
 ## Closing words
-All files for this post can be found in this [repo](https://github.com/picccard/self-hosted-runner).
+All files for this post can be found in this [repository](https://github.com/picccard/self-hosted-runner).
 
 I know this post only describes the creation of runners for a specific repository, so in the future I would like to re-visit this and have a look at [GitHub Organizations](https://docs.github.com/en/organizations).
 

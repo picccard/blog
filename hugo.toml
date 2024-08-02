@@ -15,12 +15,14 @@ pygmentsStyle = "monokai"
   avatarURL = "/images/headshot.jpeg"
   AvatarAltText = "avatar"
   avatarSize = "size-l"
+  dateFormat = "2 January, 2006"
   ShowBackToTopButton = true # true or false for "back to top" button on posts
   socialIcons = [
     {name = "github", url = "https://github.com/picccard"},
     {name = "linkedin", url = "https://www.linkedin.com/in/eskil-larsen-a15479175/"},
     {name = "rss", url = "/index.xml"}
   ]
+  togglePreviousAndNextButtons = "true"
   metaKeywords = ["blog", "gokarna", "hugo"]
 
 [menu]

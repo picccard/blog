@@ -1,7 +1,8 @@
 ---
-title: "How to run GitHub Runners Self-Hosted in Azure - Part 1"
+title: "Build self-hosted runners in Azure - Part 1"
 date: 2024-08-01T15:56:27+02:00
-description: "How to run GitHub Runners Self-Hosted in Azure - Part 1"
+#lastmod: 2024-08-06T15:56:27+02:00
+description: Using Azure Container Apps for self-hosted runners in GitHub"
 tags: ["github", "azure", "container", "docker", "bicep", "powershell"]
 type: post
 image: "/images/github-runner-part1/github-runner-part1.png"
@@ -9,7 +10,7 @@ weight: 15
 showTableOfContents: true
 ---
 
-# How to run GitHub Runners Self-Hosted in Azure
+![Title image](/images/github-runner-part1/github-runner-part1.png "Title image")
 
 ## Why self-hosted runners
 GitHub-hosted runners are great! They come in a variety OS and release versions, and with a bunch of preinstalled software.
@@ -22,6 +23,8 @@ However self-hosted runners allows for more flexibility when you require somethi
 While GitHub-hosted runners are hosted on [virtual machines](https://github.com/actions/runner-images#about), self-hosted runners can run from both on-prem and in a cloud, inside of a virtual machine or in a container. Heck, you can run it on your physical machine if you want to!
 
 So in this post I'll go over how to create a container image for a self-hosted runner, how to run it in Azure and some gotchas I encountered.
+
+## Setup
 
 ### Find the software
 Heading over to the settings of a GitHub repo or org shows the instructions for downloading, configuring and starting the runner software.

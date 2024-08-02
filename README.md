@@ -27,7 +27,7 @@ cp -r themes/maverick/exampleSite/* .
 ```bash
 git submodule add https://github.com/martignoni/hugo-notice.git themes/hugo-notice
 ```
-Add hugo-notice as the left-most element of the theme list variable in your site's configuration file `hugo.toml`.
+Add hugo-notice as the left-most element of the theme list in `hugo.toml`.
 ``` toml
 theme = ["hugo-notice", "my-theme"]
 ```

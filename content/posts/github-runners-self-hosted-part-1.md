@@ -2,7 +2,7 @@
 title: "Build self-hosted runners in Azure - Part 1"
 date: 2024-08-01T15:56:27+02:00
 #lastmod: 2024-08-06T15:56:27+02:00
-description: Using Azure Container Apps for self-hosted runners in GitHub"
+description: "Using Azure Container Apps for self-hosted runners in GitHub"
 tags: ["github", "azure", "container", "docker", "bicep", "powershell"]
 type: post
 image: "/images/github-runner-part1/github-runner-part1.png"

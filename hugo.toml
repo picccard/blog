@@ -38,7 +38,7 @@ pygmentsStyle = "monokai"
   
   let giscusScript = document.createElement("script");
   Object.entries(giscusAttributes).forEach(([key, value]) => giscusScript.setAttribute(key, value));
-  document.body.appendChild(giscusScript);
+  document.getElementById("comments").appendChild(giscusScript);
 </script>
 """
   customHeadHTML = """

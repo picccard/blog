@@ -16,22 +16,33 @@ pygmentsStyle = "monokai"
   AvatarAltText = "avatar"
   avatarSize = "size-l"
   customCommentHTML = """
-<script src="https://giscus.app/client.js"
-        data-repo="picccard/blog"
-        data-repo-id="R_kgDOLuCJfQ"
-        data-category="General"
-        data-category-id="DIC_kwDOLuCJfc4ChWvV"
-        data-mapping="pathname"
-        data-strict="0"
-        data-reactions-enabled="1"
-        data-emit-metadata="0"
-        data-input-position="bottom"
-        data-theme="preferred_color_scheme"
-        data-lang="en"
-        data-loading="lazy"
-        crossorigin="anonymous"
-        async>
+<script>
+  let giscusTheme = localStorage.getItem(THEME_PREF_STORAGE_KEY) ||
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark': 'light');
+  let giscusAttributes = {
+    "src": "https://giscus.app/client.js",
+    "data-repo": "picccard/blog",
+    "data-repo-id": "R_kgDOLuCJfQ",
+    "data-category": "General",
+    "data-category-id": "DIC_kwDOLuCJfc4ChWvV",
+    "data-mapping": "pathname",
+    "data-strict": "0",
+    "data-reactions-enabled": "1",
+    "data-emit-metadata": "0",
+    "data-input-position": "bottom",
+    "data-theme": giscusTheme,
+    "data-lang": "en",
+    "crossorigin": "anonymous",
+    "async": "",
+  };
+  
+  let giscusScript = document.createElement("script");
+  Object.entries(giscusAttributes).forEach(([key, value]) => giscusScript.setAttribute(key, value));
+  document.body.appendChild(giscusScript);
 </script>
+"""
+  customHeadHTML = """
+<script src="/js/giscus-theme.js"></script>
 """
   dateFormat = "2 January, 2006"
   ShowBackToTopButton = true # true or false for "back to top" button on posts

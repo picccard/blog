@@ -31,6 +31,17 @@ Add hugo-notice as the left-most element of the theme list in `hugo.toml`.
 ``` toml
 theme = ["hugo-notice", "my-theme"]
 ```
+
+# Start
+```pwsh
+git clone https://github.com/picccard/blog
+cd blog
+git submodule init
+git submodule update
+
+winget install -e --id Hugo.Hugo
+hugo server
+```
 # Ref
 - [https://gohugo.io/getting-started/quick-start/](https://gohugo.io/getting-started/quick-start/)
 - [https://themes.gohugo.io/themes/maverick/](https://themes.gohugo.io/themes/maverick/)

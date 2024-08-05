@@ -42,6 +42,7 @@ pygmentsStyle = "monokai"
 </script>
 """
   customHeadHTML = """
+<link rel="stylesheet" type="text/css" href="/css/eula.css">
 <script src="/js/giscus-theme.js"></script>
 """
   dateFormat = "2 January, 2006"

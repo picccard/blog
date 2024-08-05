@@ -1,0 +1,10 @@
+
+/* center image caption */
+/*
+![](path_to_image)
+*image_caption*
+*/
+img + em {
+    display: flex;
+    justify-content: center;
+}

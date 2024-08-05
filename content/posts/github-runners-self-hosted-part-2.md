@@ -311,4 +311,7 @@ Here comes a series of images showcasing some of the differences with vnet integ
 {{< imagecaption source="/images/github-runner-part2/vnet-connected-devices-1.png" alt="workload profiles environment, vnet" title="workload profiles environment, vnet connected devices" >}}
 
 
+## Closing words
+All files for this post can be found in this [repository](https://github.com/picccard/self-hosted-runner).
 
+This will be the last post in this series  for now. Regarding replacement of the PAT in favor of a GitHub App, [myoung34](https://github.com/myoung34)’s excellent [containerized runner](https://github.com/myoung34/docker-github-actions-runner) already solves this. If I were to revisit this later, I'd have a try at doing this with powershell instead of bash, as I'm heavily dependent of powershell in my runners.

@@ -243,11 +243,11 @@ module aca 'br/public:avm/res/app/container-app:0.4.1' = {
 Deploy the bicep template to a subscription. Use azure-cli or pwsh in your own terminal, or create a workflow to handle it.
 ```powershell
 $deploySplat = @{
-    Name                           = "self-hosted-runners-{0}" -f (Get-Date).ToString("yyyyMMdd-HH-mm-ss")
-    Location                       = $azRegion
-    TemplateFile                   = 'src/bicep/main.bicep'
-    TemplateParameterFile          = 'main.bicepparam'
-    Verbose                        = $true
+    Name                  = "self-hosted-runners-{0}" -f (Get-Date).ToString("yyyyMMdd-HH-mm-ss")
+    Location              = $azRegion
+    TemplateFile          = 'src/bicep/main.bicep'
+    TemplateParameterFile = 'main.bicepparam'
+    Verbose               = $true
 }
 Select-AzSubscription -Subscription $azSubscriptionName
 New-AzSubscriptionDeployment @deploySplat

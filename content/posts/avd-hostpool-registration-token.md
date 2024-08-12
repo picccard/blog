@@ -24,7 +24,7 @@ The bicep compiles to this json:
 ```
 
 ## Recently errors
-Recently these deployments has began to fail in some envornments, with these errors:
+Recently these deployments has began to fail in some envornments, with the errors:
 1. > ...The language expression property 'token' can't be evaluated.
 2. > ...Expected a value of type 'String, Uri' but received a value of type 'Null'.
 

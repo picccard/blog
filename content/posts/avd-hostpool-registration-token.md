@@ -12,7 +12,7 @@ showTableOfContents: true
 
 ## The old ways
 
-Up until now I've been using one of these to fetch a registration token:
+Up until now I've been using the reference function fetch a registration token. It's possible to specify an explicit api-version:
 ```bicep
 output token1 object = reference(hostPool.id, '2023-09-05').registrationInfo.token
 output token2 string = reference(hostPool.id).registrationInfo.token
@@ -24,7 +24,7 @@ The bicep compiles to this json:
 ```
 
 ## Recently errors
-Recently these deployments has began to fail in some envornments, with these errors:
+Recently these deployments has began to fail in some envornments, with the errors:
 1. > ...The language expression property 'token' can't be evaluated.
 2. > ...Expected a value of type 'String, Uri' but received a value of type 'Null'.
 

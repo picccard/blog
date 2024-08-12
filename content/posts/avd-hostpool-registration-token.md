@@ -59,3 +59,41 @@ output token string = first(hostPool.listRegistrationTokens()).token
 Usage of any `list*` function allows the linter to know this is a secret, and give recommendations based on that. In [the old ways](#the-old-ways), the api-versions had the `token` property not marked as a secret, thus allowing it to be fetched though GET requests.
 
 {{< imagecaption source="/images/hostpool-list-registration-tokens/linter-possible-secret.png" alt="vscode linter shows warning" title="linter - possible secret" >}}
+
+## Full Bicep example
+{{< details title="Full bicep example (CLICK TO EXPAND)" >}}
+```bicep
+@description('The name of the hostpool')
+param hostpoolName string = 'vdpool-listregtoken-001'
+
+@description('Location for all resources to be created in.')
+param location string = resourceGroup().location
+
+param tokenExpirationTime string = dateTimeAdd(utcNow('yyyy-MM-dd T00:00:00'), 'P1D', 'o')
+
+resource hostPool 'Microsoft.DesktopVirtualization/hostPools@2023-09-05' = {
+  name: hostpoolName
+  location: location
+  properties: {
+    hostPoolType: 'Pooled'
+    loadBalancerType: 'BreadthFirst'
+    maxSessionLimit: 5
+    description: 'first avd host pool'
+    friendlyName: 'friendly name'
+    preferredAppGroupType: 'Desktop'
+    registrationInfo: {
+      expirationTime: tokenExpirationTime
+      registrationTokenOperation: 'Update'
+    }
+  }
+}
+
+// old
+// output registrationInfo object = reference(hostPool.id).registrationInfo
+// output token object = reference(hostPool.id).registrationInfo.token
+
+// new
+output registrationTokens object = first(hostPool.listRegistrationTokens())
+output token object = first(hostPool.listRegistrationTokens()).token
+```
+{{< /details >}}

@@ -1,7 +1,7 @@
 ---
 title: "AVD HostPool and listRegistrationTokens"
 date: 2024-08-12T10:41:12+02:00
-#lastmod: 2024-08-07T09:43:22+02:00
+lastmod: 2024-09-07T17:01:22+02:00
 description: "Getting registration tokens from a host pool the secure way"
 tags: ["azure", "avd", "bicep"]
 type: post
@@ -23,7 +23,7 @@ The bicep compiles to this json:
 "[reference(resourceId('Microsoft.DesktopVirtualization/hostPools', parameters('hostpoolName'))).registrationInfo.token)]"
 ```
 
-## Recently errors
+## Recent errors
 Recently these deployments has began to fail in some envornments, with the errors:
 1. > ...The language expression property 'token' can't be evaluated.
 2. > ...Expected a value of type 'String, Uri' but received a value of type 'Null'.
@@ -34,25 +34,28 @@ Recently these deployments has began to fail in some envornments, with the error
 
 {{< imagecaption source="/images/hostpool-list-registration-tokens/got-null.png" alt="azure deployment type error" title="received a value of type 'null'" >}}
 
-## Introducing function listRegistrationTokens
+## Introducing listRegistrationTokens()
 
-In GitHub issue [Azure/bicep-types-az/issues/2023](https://github.com/Azure/bicep-types-az/issues/2023#issuecomment-2278685926) Microsoft FTE @shenglol shows the new resource function `listRegistrationTokens()`. _The function is as of 2024.08.12 not yet documented in the [bicep documentation](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-functions-resource#implementations) or outside of the API spec, to the best of my knowledge..._
+In GitHub issue [Azure/bicep-types-az/issues/2023](https://github.com/Azure/bicep-types-az/issues/2023#issuecomment-2278685926) Microsoft FTE @shenglol shows the new resource function `listRegistrationTokens()`. _The function is as of 2024.08.12 not yet documented in the [bicep documentation](https://learn.microsoft.com/en-us/azure/azure-resource-manager/bicep/bicep-functions-resource#implementations) or outside of the API spec, to the best of my knowledge... The API-call is documented [here](https://learn.microsoft.com/en-us/rest/api/desktopvirtualization/host-pools/list-registration-tokens?view=rest-desktopvirtualization-2024-04-03&tabs=HTTP)_
 
-The function returns a list of objects with a token and the expirationTime:
+The function returns object with a list of objects with a token and the expirationTime:
 ```json
-[
-  {
-    "expirationTime": "2024-08-13T00:00:00Z",
-    "token": "eyJh[REDACTED].eyJS[REDACTED].Kii[REDACTED]"
-  }
-]
+{
+  "value": [
+    {
+      "expirationTime": "2024-08-13T00:00:00Z",
+      "token": "eyJh[REDACTED].eyJS[REDACTED].Kii[REDACTED]"
+    }
+  ]
+}
 ```
 
 Here is some usage with it:
 ```bicep
-output tokenList array = hostPool.listRegistrationTokens()
-output tokenObj object = hostPool.listRegistrationTokens()[0]
-output token string = first(hostPool.listRegistrationTokens()).token
+output tokenRootObject object = hostpool.listRegistrationTokens()
+output tokenList array = hostpool.listRegistrationTokens().value
+output tokenInnerObj object = hostpool.listRegistrationTokens().value[0]
+output token string = first(hostpool.listRegistrationTokens().value).token
 ```
 
 ## Linter support
@@ -93,7 +96,8 @@ resource hostPool 'Microsoft.DesktopVirtualization/hostPools@2023-09-05' = {
 // output token object = reference(hostPool.id).registrationInfo.token
 
 // new
-output registrationTokens object = first(hostPool.listRegistrationTokens())
-output token object = first(hostPool.listRegistrationTokens()).token
+output registrationTokens object = first(hostPool.listRegistrationTokens().value)
+output token object = first(hostPool.listRegistrationTokens().value).token
+
 ```
 {{< /details >}}

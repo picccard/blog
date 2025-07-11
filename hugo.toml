@@ -47,7 +47,7 @@ pygmentsStyle = "monokai"
 <script data-goatcounter="https://blog-eula-no.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
 """
   dateFormat = "2 January, 2006"
-  ShowBackToTopButton = true # true or false for "back to top" button on posts
+  showBackToTopButton  = true # true or false for "back to top" button on posts
   # showPostsOnHomePage = "recent" # recent, popular, empty
   socialIcons = [
     {name = "github", url = "https://github.com/picccard"},

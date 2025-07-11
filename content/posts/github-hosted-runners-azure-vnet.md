@@ -1,6 +1,6 @@
 ---
 title: "GitHub-hosted runners with Azure private networking"
-date: 2024-08-21T09:12:22+02:00
+date: 2025-07-11T09:12:22+02:00
 lastmod: 2025-07-11T15:39:33+02:00
 description: "GitHub-hosted runners with access to private Azure virtual networks"
 tags: ["github", "azure", "networking", "bicep", "powershell"]

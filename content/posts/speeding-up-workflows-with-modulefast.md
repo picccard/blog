@@ -1,12 +1,12 @@
 ---
-title: "Speeding up workflows with ModuleFast"
-date: 2024-07-12T08:22:47+02:00
-#lastmod: 2024-08-07T08:22:47+02:00
-description: "Comparing ModuleFast to psmodulecache and the cmdlet Install-PSResource"
+title: "Use ModuleFast to speed up workflows"
+date: 2025-07-11T16:22:47+02:00
+#lastmod: 2025-07-12T16:22:47+02:00
+description: "Comparing ModuleFast to psmodulecache and Install-PSResource"
 tags: ["github", "powershell"]
 type: post
-image: "/images/github-runner-part2/github-runner-part2.png"
-# weight: 4
+# image: "/images/modulefast/....png"
+# weight: 6
 showTableOfContents: true
 ---
 
@@ -135,5 +135,6 @@ That means the cache hit ratio was 71.43% (5/7).
 
 ## Conclusion
 
-The time reduction from `Install-Module` to ModuleFast is **63.14%** in this test! The sample size should have been bigger, but I'll definitively change some of my CI to use ModuleFast. \
-However, the module is currently v0.3.0 and the action is v0.0.1, so it's not quite production ready...
+The time reduction from `Install-Module` to ModuleFast is **63.14%** in this test! The sample size should have been bigger, but I'll definitively change some of my CI to use ModuleFast.
+
+*I original did this post in august 2024, but I never got around to publishing it so here it comes in july 2025 instead.*

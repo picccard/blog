@@ -1,8 +1,8 @@
 ---
-title: "EPAC manages Azure policies at scale"
+title: "Manage Azure policies at scale with EPAC"
 date: 2025-07-18T09:12:22+02:00
 # lastmod: 2025-07-18T15:39:33+02:00
-description: "Manage Azure policies at scale with EPAC"
+description: "How pwsh and EPAC manages policy as code"
 tags: ["azure", "policy", "powershell"]
 type: post
 image: "/images/epac/pwsh-heart-azure-policy.png"

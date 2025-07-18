@@ -18,11 +18,11 @@ As the number of policy resources grows, [EPAC](https://azure.github.io/enterpri
 ## What is EPAC
 Enterprise Azure Policy as Code (EPAC) is a **declarative** and **idempotent** desired state deployment technology for Azure Policy. It handles the creation, updating and deletion of policy resources.
 
-EPAC comes as a collection of PowerShell scripts to manage Policies, PolicySets, Policy Assignments, Policy Exemptions and Role Assignments. There is also scripts for operational puposes such as remedation tasks and documentation of policy resources.
+EPAC comes as a collection of PowerShell scripts to manage Policies, PolicySets, Policy Assignments, Policy Exemptions and Role Assignments. There are also scripts for operational purposes such as remediation tasks and documentation of policy resources.
 
-To fully automate the mangement of policy resources with EPAC, it is recommened to implementing EPAC in a CI/CD system such as GitHub Actions or Azure Pipelines.
+To fully automate the management  of policy resources with EPAC, it is recommended  to implementing EPAC in a CI/CD system such as GitHub Actions or Azure Pipelines.
 
-EPAC has three major steps in the deployment process, each has its own cmdlet in the module.
+EPAC has three major steps in the deployment process, each has it's own cmdlet in the module.
 - Build-DeploymentPlans - *Analyze policy resource files and calculate desired state delta*
 - Deploy-PolicyPlan - *Deploy policy resources at their desired scope based on the plan*
 - Deploy-RolesPlan - *Deploy role assignments for Managed Identities, required for `DeployIfNotExists` and `Modify` Policies*
@@ -180,12 +180,12 @@ Rename-Item -Path .\Output\plans-epac\policy-plan.json -NewName policy-plan-full
 
 Building a deployment plan now results in the file `.\Output\plans-epac\policy-plan.json` beeing created and the terminal output also says it will delete 2 policy assignments. But there is no mention of the policy exemptions yet..?
 
-{{< imagecaption source="/images/epac/build-full-init.png" alt="build plan expects to delete existing assingments" title="build plan expects to delete existing assingments" >}}
+{{< imagecaption source="/images/epac/build-full-init.png" alt="build plan expects to delete existing assignments" title="build plan expects to delete existing assignments" >}}
 
 {{< imagecaption source="/images/epac/plan-full-firsttime.png" alt="policy plan with desiredState.strategy 'full'" title="policy plan with desiredState.strategy 'full'" >}}
 
 ## Exemptions
-EPAC only manages items with a directory in the Definitions folder. This allows for different policy resources to be managed in seperate repositories. The [documentation](https://azure.github.io/enterprise-azure-policy-as-code/settings-desired-state/#using-separate-repos) offers several example use cases.
+EPAC only manages items with a directory in the Definitions folder. This allows for different policy resources to be managed in separate repositories. The [documentation](https://azure.github.io/enterprise-azure-policy-as-code/settings-desired-state/#using-separate-repos) offers several example use cases.
 
 I am missing a directory for `policyExemptions` in my [current folder structure](#epac-folder-structure). Since I will manage all policy resources in one centralized repo, I have to create the directory. I also create a sub-folder for each of my environments.
 
@@ -218,7 +218,7 @@ $splat = @{
 Export-AzPolicyResources @splat
 ```
 
-The exported files should be examined and moved to their designated folder. I will create a dedicated folder for policy assignments created by my organization. This way its possible to separate policy assignments created by us and those created by ALZ. I also create a sub-folder for each of my environments.
+The exported files should be examined and moved to their designated folder. I will create a dedicated folder for policy assignments created by my organization. This way it is possible to separate policy assignments created by us and those created by ALZ. I also create a sub-folder for each of my environments.
 
 *The policyExemptions has a metadata property, this will be removed. The metadata.deployedBy property is managed my EPAC internally.*
 
@@ -428,7 +428,7 @@ Build-DeploymentPlans -DefinitionsRootFolder .\Definitions-demo -PacEnvironmentS
 {{< imagecaption source="/images/epac/build-full-after-v2024-11-0.png" alt="no more changes" title="no more changes" >}}
 
 ## Upgrade ALZ policies
-The ALZ team regularly updates the ALZ policy definitions and assignments, not on a quarterly basis. To get a grasp of whats changed have a look at their [Whats new page](https://aka.ms/alz/whatsnew). And to assist in making sure you have the latest policy assignments, check out [AzGovViz](https://techcommunity.microsoft.com/blog/azuregovernanceandmanagementblog/keep-your-azure-landing-zones-policy-assignments-up-to-date-with-azure-governanc/4292789) and its **ALZ Policy assignments checker**.
+The ALZ team regularly updates the ALZ policy definitions and assignments, not on a quarterly basis. To get a grasp of what's changed have a look at their [Whats new page](https://aka.ms/alz/whatsnew). And to assist in making sure you have the latest policy assignments, check out [AzGovViz](https://techcommunity.microsoft.com/blog/azuregovernanceandmanagementblog/keep-your-azure-landing-zones-policy-assignments-up-to-date-with-azure-governanc/4292789) and it's **ALZ Policy assignments checker**.
 
 During the upgrade we have to fetch the latest policy-default-structure file and do a new sync from the ALZ-library.
 
@@ -457,14 +457,14 @@ New-ALZPolicyDefaultStructure -DefinitionsRootFolder .\Definitions-demo -Type AL
 
 From the diff above you can see an example of whats changed in the newer release.
 
-Before I sync the latest ALZ policies I remove the existing onces. This way I can see from the git diff what assignments are changed and what has been removed. This review process should be done manually to see I the ALZ policies is in line with your specs or not. Sometimes you might already have a customer specific policyAssignment doing the same as a new ALZ policy, kee your policy repo tidy!
+Before I sync the latest ALZ policies I remove the existing onces. This way I can see from the git diff what assignments are changed and what has been removed. This review process should be done manually to see I the ALZ policies is in line with your specs or not. Sometimes you might already have a customer specific policyAssignment doing the same as a new ALZ policy, keep your policy repo tidy!
 
 For this release:
 - the policyAssignments scoped to the intermediate root management group, is place in a dedicated folder
 - the directory `Sandboxes` is renamed to `Sandbox`
 - `Enforce-TLS-SSL-H224` is replaced by `Enforce-TLS-SSL-Q225`
 
-I only keep assigments in the sandbox and landing zones directories.
+I only keep the assignments located in the sandbox and landing zones directories.
 
 ```powershell
 git add 'Definitions-demo\policyStructures\alz.policy_default_structure.epac.jsonc'
@@ -523,7 +523,7 @@ git add .\Definitions-demo\policyAssignments\ALZ\epac\Sandbox
 git commit -m 'added latest policy assignments for sandbox scope'
 ```
 
-Now with everything reviewed and commited, build a deployment plan and deploy it.
+Now with everything reviewed and committed, build a deployment plan and deploy it.
 
 ```powershell
 Build-DeploymentPlans -DefinitionsRootFolder .\Definitions-demo -PacEnvironmentSelector epac -OutputFolder Output
@@ -550,4 +550,4 @@ Even the faulty policySet `Enforce-Encryption-CMK` has returned, this time witho
 Doing the "upgrade" demo I discovered both `New-ALZPolicyDefaultStructure` & `Sync-ALZPolicyFromLibrary` did not properly handle the tag parameter, this bug should be fixed by pull request [Azure/enterprise-azure-policy-as-code#996](https://github.com/Azure/enterprise-azure-policy-as-code/pull/996).
 
 ## Closing words
-This was ment as a getting started post for EPAC, there is plenty more to explore such as policy documentations, syncing AMBA policies and deploying everything from a CI/CD pipeline to both prod and the canary environments.
+This was meant as a getting started post for EPAC, there is plenty more to explore such as policy documentations, syncing AMBA policies and deploying everything from a CI/CD pipeline to both prod and the canary environments.

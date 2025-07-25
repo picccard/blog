@@ -220,7 +220,7 @@ To populate the cache, I do a `oras pull` for each module version I need. This i
 
 # Gotchas
 ## Dependency checks
-When publishing a module, there is some prechecks likke checking that all dependencies are present in the target repository. Either bypass this with the `-SkipDependenciesCheck` parameter or publish the dependencies first.
+When publishing a module, there is some prechecks like checking that all dependencies are present in the target repository. Either bypass this with the `-SkipDependenciesCheck` parameter or publish the dependencies first.
 
 ```powershell
 $mod = Get-Module -ListAvailable 'PSDocs.Azure'

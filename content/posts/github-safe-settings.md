@@ -311,6 +311,15 @@ restrictedRepos:
 
 This file is loaded when safe-settings starts. When running safe-settings from a container the file must be mounted to the default path of `/opt/safe-settings/deployment-settings.yml`. Use the environment variable __DEPLOYMENT_CONFIG_FILE_PATH__ if the file is mounted to a custom path.
 
+```bash
+podman run \
+  ...
+  -e ADMIN_REPO="safe-settings-demo001" \
+  -p 3000:3000 \
+  -v "$(pwd)/deployment-settings.yml":/opt/safe-settings/deployment-settings.yml:ro \
+  safe-settings
+```
+
 When the webhook recieves an event the logs will look something like this.
 
 ```json
